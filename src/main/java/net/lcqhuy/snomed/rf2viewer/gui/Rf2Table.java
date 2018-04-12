@@ -33,7 +33,7 @@ public class Rf2Table extends JPanel{
         jScrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_AS_NEEDED);
         jScrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED);
 
-        JLabel jLabel = new JLabel("<html>" + FilenameUtils.getFullPath(filePath) + "<font color='red'>" +  FilenameUtils.getName(filePath) +"</font></html>");
+        JLabel jLabel = new JLabel("<html>" + FilenameUtils.getFullPath(filePath) + "<font color='blue'>" +  FilenameUtils.getName(filePath) +"</font></html>");
         this.add(jLabel,BorderLayout.BEFORE_FIRST_LINE);
         this.add(jScrollPane);
         createSearchPane(jTable);

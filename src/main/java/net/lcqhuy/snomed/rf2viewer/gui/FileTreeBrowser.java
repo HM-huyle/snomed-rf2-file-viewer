@@ -60,7 +60,19 @@ public class FileTreeBrowser extends JPanel{
                 TreePath selPath = tree.getPathForLocation(e.getX(), e.getY());
                 if(selRow != -1) {
                     if(e.getClickCount() == 2) {
-                        openFile(selPath);
+                        SwingUtilities.invokeLater(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    tree.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                                    openFile(selPath);
+                                } finally {
+                                    tree.setCursor(Cursor.getDefaultCursor());
+                                }
+
+                            }
+                        });
+
                     }
                 }
             }
@@ -86,7 +98,7 @@ public class FileTreeBrowser extends JPanel{
                     Rf2Table rf2Table = new Rf2Table(new BorderLayout());
                     try {
                         rf2Table.initTable(file.getAbsolutePath());
-                        fileViewerTab.addTab(file.getName().substring(0,15)+"...", rf2Table);
+                        fileViewerTab.addTab(file.getName().substring(0,15)+"...", null, rf2Table, FilenameUtils.getName(file.getAbsolutePath()));
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
