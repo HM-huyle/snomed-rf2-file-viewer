@@ -42,7 +42,6 @@ public class FileTreeBrowser extends JPanel{
     }
 
     public void initialize() {
-
         createSelectFolderPane();
     }
 
@@ -124,7 +123,7 @@ public class FileTreeBrowser extends JPanel{
         });
         footerPane.add(selectDirBtn);
         this.add(footerPane, BorderLayout.SOUTH);
-        
+
     }
 
     class CreateChildNodes implements Runnable {
@@ -144,8 +143,14 @@ public class FileTreeBrowser extends JPanel{
 
         @Override
         public void run() {
-            createChildren(fileRoot, root);
-            jPanel.revalidate();
+            try {
+                jPanel.setCursor(Cursor.getPredefinedCursor(Cursor.WAIT_CURSOR));
+                createChildren(fileRoot, root);
+                jPanel.revalidate();
+            } finally {
+                jPanel.setCursor(Cursor.getDefaultCursor());
+            }
+
 
         }
 
@@ -155,6 +160,7 @@ public class FileTreeBrowser extends JPanel{
             if (files == null) return;
 
             for (File file : files) {
+                if(file.isFile() && !isRF2File(file.getName())) continue;
                 DefaultMutableTreeNode childNode =
                         new DefaultMutableTreeNode(new FileNode(file));
                 node.add(childNode);
@@ -163,6 +169,13 @@ public class FileTreeBrowser extends JPanel{
                 }
             }
         }
+
+        private boolean isRF2File(String fileName) {
+            return FilenameUtils.isExtension(fileName,"txt") && (fileName.startsWith("der2_") || fileName.startsWith("xder2_")
+                    || fileName.startsWith("sct2_") || fileName.startsWith("xsct2_")
+                    || fileName.startsWith("rel2_") || fileName.startsWith("xrel2_"));
+        }
+
     }
 
     class FileNode {
@@ -187,6 +200,6 @@ public class FileTreeBrowser extends JPanel{
             }
         }
     }
-    
+
 
 }
